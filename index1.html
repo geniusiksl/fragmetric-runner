@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fragmetric Runner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="pageContainer">
+        <header id="gameHeader">
+            <img id="logo" src="fragmetric_logo.png" alt="Fragmetric Logo">
+            <img id="gameTitle" src="gribo4ki.png" alt="Gribo4ki Title">
+        </header>
+
+        <div id="gameContainer">
+            <button id="soundToggle" onclick="toggleSound()">🔊 Sound: ON</button>
+            <div id="score">Score: 0</div>
+
+            <div id="centerMessageContainer">
+                <div id="startMessage">Press SPACE or click to jump</div>
+                <div id="gameOverMessage">Game Over!</div>
+                <button id="restartBtn">Start the game</button>
+            </div>
+
+            <canvas id="gameCanvas"></canvas>
+        </div>
+
+        <footer id="gameFooter">
+            <a href="https://x.com/i/communities/1933952628632752431" target="_blank">Join us on X</a>
+        </footer>
+
+        <audio id="jumpSound" src="jump.mp3" preload="auto"></audio>
+        <audio id="gameOverSound" src="gameover.mp3" preload="auto"></audio>
+        <audio id="scoreSound" src="score.mp3" preload="auto"></audio>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: sans-serif;
+    background: linear-gradient(to bottom, #ABCBB1, #283035);
+}
+
+#pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Расширяем контейнер на всю ширину */
+}
+
+#gameHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+#logo {
+    height: 80px; /* Еще увеличил */
+    margin-right: 10px;
+}
+
+#gameTitle {
+    height: 70px; /* И это тоже */
+}
+
+/* Canvas */
+#gameContainer {
+    position: relative;
+    width: 1100px; /* Значительно увеличил ширину */
+    height: 400px; /* Возвращаю старую высоту */
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 40px; /* Добавил отступ снизу до Join us on X */
+}
+
+#gameCanvas {
+    display: block;
+}
+
+/* Счет */
+#score {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #666;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+/* Центрирование сообщений и кнопки */
+#centerMessageContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+/* Сообщения */
+#startMessage, #gameOverMessage {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+#gameOverMessage {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #d63031;
+}
+
+/* Кнопка */
+#restartBtn {
+    padding: 12px 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #55efc4;
+    color: #000;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+}
+
+#restartBtn:hover {
+    background-color: #00b894;
+}
+
+#restartBtn:active {
+    transform: scale(0.98);
+}
+
+/* Кнопка звука */
+#soundToggle {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Подвал */
+#gameFooter {
+    text-align: center;
+    padding: 10px;
+}
+
+#gameFooter a {
+    font-size: 3em;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
