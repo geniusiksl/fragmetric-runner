@@ -1,6 +1,4 @@
-// ========================================
-// Универсальный обработчик ошибок (поможет найти, где все падает)
-// ========================================
+
 window.onerror = function(message, source, lineno, colno, error) {
     console.error("--- Необработанная ошибка ---");
     console.error("Сообщение:", message);
@@ -9,11 +7,11 @@ window.onerror = function(message, source, lineno, colno, error) {
     console.error("Столбец:", colno);
     console.error("Объект ошибки:", error);
     console.error("---------------------------");
-    // Дополнительные действия при ошибке (например, показать сообщение пользователю)
-    if (typeof gameOver === 'function') { // Проверяем, что функция gameOver определена
-        // gameOver(); // Можно вызвать game over, но это может вызвать рекурсивные ошибки
+   
+    if (typeof gameOver === 'function') { 
+        // gameOver(); 
     }
-    // Возвращаем true, чтобы браузер не выводил ошибку в консоль дважды
+    
     return true;
 };
 
@@ -22,27 +20,27 @@ window.onerror = function(message, source, lineno, colno, error) {
 // ПОЛУЧЕНИЕ ЭЛЕМЕНТОВ CANVAS И UI
 // ========================================
 const canvas = document.getElementById('gameCanvas');
-// Проверка, что canvas элемент найден. Если нет, логируем ошибку и не продолжаем.
-if (!canvas) { console.error("Ошибка инициализации: Элемент Canvas с ID 'gameCanvas' не найден на странице!"); }
-const ctx = canvas ? canvas.getContext('2d') : null; // Получаем 2D контекст для рисования
 
-// Получаем элементы пользовательского интерфейса (UI) из HTML (убедись, что ID соответствуют!)
-const scoreElement = document.getElementById('score'); // Элемент для отображения счета
-const centerMessageContainer = document.getElementById('centerMessageContainer'); // Контейнер для центрирования сообщений/кнопки
-const startMessageElement = document.getElementById('startMessage'); // Блок для стартового сообщения ("Нажмите ПРОБЕЛ...")
-const gameOverMessageElement = document.getElementById('gameOverMessage'); // Блок для сообщения Game Over ("Игра окончена!")
-const restartBtn = document.getElementById('restartBtn'); // Кнопка для старта/перезапуска ("Начать игру" / "Начать заново")
-const soundToggleBtn = document.getElementById('soundToggle'); // Кнопка для переключения звука
+if (!canvas) { console.error("Ошибка инициализации: Элемент Canvas с ID 'gameCanvas' не найден на странице!"); }
+const ctx = canvas ? canvas.getContext('2d') : null; 
+
+// Получаем элементы пользовательского интерфейса (UI) из HTML 
+const scoreElement = document.getElementById('score'); 
+const centerMessageContainer = document.getElementById('centerMessageContainer'); 
+const startMessageElement = document.getElementById('startMessage'); 
+const gameOverMessageElement = document.getElementById('gameOverMessage'); 
+const restartBtn = document.getElementById('restartBtn'); 
+const soundToggleBtn = document.getElementById('soundToggle'); 
 
 // Получаем аудио элементы из HTML (Убедись, что ID здесь правильные и соответствуют HTML)
-const jumpSound = document.getElementById('jumpSound'); // Звук прыжка
-const gameOverSound = document.getElementById('gameOverSound'); // Звук окончания игры
-const scoreSound = document.getElementById('scoreSound'); // Звук получения очков
+const jumpSound = document.getElementById('jumpSound'); 
+const gameOverSound = document.getElementById('gameOverSound'); 
+const scoreSound = document.getElementById('scoreSound'); 
 
 // Проверки на существование всех важных элементов UI (для раннего предупреждения)
 if (!scoreElement || !centerMessageContainer || !startMessageElement || !gameOverMessageElement || !restartBtn || !soundToggleBtn || !jumpSound || !gameOverSound || !scoreSound || !ctx) {
      console.error("Критическая ошибка инициализации: Не все необходимые HTML элементы с правильными ID найдены или Canvas/Context недоступен.");
-     // Если это критично, можно добавить логику для полной остановки игры или показа сообщения об ошибке пользователю.
+     
      // alert("Произошла ошибка загрузки игры. Пожалуйста, обновите страницу или проверьте файлы.");
 }
 
@@ -54,11 +52,11 @@ if (!scoreElement || !centerMessageContainer || !startMessageElement || !gameOve
 // Настройки игрока
 const PLAYER_CONFIG = {
     width: 60, height: 60, x: 100,
-    groundYOffset: 5, // Смещение игрока вверх от линии земли
-    jumpPower: 23,     // !!! СИЛА ПРЫЖКА - увеличена для прыжка дальше
-    gravity: 0.6,      // Гравитация
-    imageSrc: 'topu.png', // Убедись, что путь верен
-    color: '#4CAF50'   // Запасной цвет
+    groundYOffset: 5, 
+    jumpPower: 23,     
+    gravity: 0.6,      
+    imageSrc: 'topu.png', 
+    color: '#4CAF50'   
 };
 
 // Настройки препятствий
@@ -68,15 +66,15 @@ const OBSTACLE_CONFIG = {
         { width: 45, height: 50 }, { width: 35, height: 55 },
     ],
     speed: 2, minGap: 400, maxGap: 600,
-    imageSrc: 'mushroom.png', // Убедись, что путь верен
+    imageSrc: 'mushroom.png', 
     color: '#ff0000'
 };
 
 // Настройки земли
 const GROUND_CONFIG = {
-    relativeY: 0.7, // Y координата верхней линии земли (70% высоты Canvas)
-    height: 100,       // Визуальная высота земли для рисования (ноfillRect будет идти до низа Canvas)
-    color: '#404242'   // Цвет земли
+    relativeY: 0.7, 
+    height: 100,       
+    color: '#404242'   
 };
 
 // Настройки фона (небо и облака)
@@ -87,7 +85,7 @@ const BACKGROUND_CONFIG = {
 
 // Настройки ускорения игры
 const SPEED_INCREASE_CONFIG = {
-    rate: 0.0008, maxSpeed: 3 // Скорость ускоряется на эту величину каждый кадр
+    rate: 0.0008, maxSpeed: 3 
 };
 
 // Настройки а
@@ -97,16 +95,16 @@ let soundEnabled = true; // Звук включен по умолчанию
 // ИГРОВЫЕ ПЕРЕМЕННЫЕ (СОСТОЯНИЕ ИГРЫ)
 // ========================================
 
-let gameRunning = false; // Флаг: запущена ли игра
-let score = 0; // Текущий счет игрока
-let gameSpeed = OBSTACLE_CONFIG.speed; // Текущая скорость движения мира (начинается с OBSTACLE_CONFIG.speed)
+let gameRunning = false; 
+let score = 0; 
+let gameSpeed = OBSTACLE_CONFIG.speed; 
 let frameCount = 0; // Счетчик кадров
 
 const player = {
-    x: PLAYER_CONFIG.x, y: 0, // Y будет рассчитана при инициализации
+    x: PLAYER_CONFIG.x, y: 0, 
     width: PLAYER_CONFIG.width, height: PLAYER_CONFIG.height,
     velocityY: 0, grounded: true, jumping: false,
-    image: null // Здесь будет объект Image
+    image: null 
 };
 
 let obstacles = [];
@@ -148,18 +146,14 @@ loadedObstacleImg = loadImage(OBSTACLE_CONFIG.imageSrc,
     (e) => { obstacleImageLoaded = true; checkAllImagesLoaded(); }
 );
 
-// checkAllImagesLoaded теперь вызывается из onload/onerror
-// initializeGameCanvas будет вызван в конце window.onload после проверки флагов загрузки.
+
 
 // Функция проверки, все ли необходимые изображения загружены
 function checkAllImagesLoaded() {
-    // Проверяем флаги загрузки обоих изображений.
-    // Если imageSrc был null, соответствующий флаг сразу true.
+    
     if (playerImageLoaded && obstacleImageLoaded) {
         console.log("Ресурсы: Все изображения загружены или отсутствуют. Инициализация Canvas готова.");
-        // После загрузки картинок (или если их нет),
-        // initializeGameCanvas будет вызвана в window.onload.
-        // Это предотвращает запуск gameLoop до готовности DOM и Canvas.
+        
     } else {
         console.log("Ресурсы: Ожидаем загрузки изображений...");
     }
@@ -174,11 +168,11 @@ function initializeGameCanvas() {
     // Проверка наличия всех необходимых элементов перед началом
     if (!canvas || !ctx || !scoreElement || !centerMessageContainer || !startMessageElement || !gameOverMessageElement || !restartBtn || !soundToggleBtn || !jumpSound || !gameOverSound || !scoreSound) {
          console.error("Критическая ошибка инициализации: Не все необходимые HTML элементы или Canvas/Context доступны.");
-         // Можно добавить alert или показать сообщение об ошибке пользователю, если элементы не найдены.
-         return; // Не продолжаем, если нет необходимых элементов
+         
+         return; 
     }
 
-    // Устанавливаем размер canvas (можно сделать адаптивным)
+    // Устанавливаем размер canvas 
     canvas.width = window.innerWidth * 0.8;
     canvas.height = window.innerHeight * 0.6;
 
@@ -188,35 +182,32 @@ function initializeGameCanvas() {
 
 
     // --- Настраиваем UI для стартового экрана ---
-    scoreElement.textContent = `Score: ${score}`; // Показываем начальный счет 0
+    scoreElement.textContent = `Score: ${score}`; 
 
-    // Показываем/скрываем сообщения и кнопку на стартовом экране
-    // Контейнер centerMessageContainer управляет отображением сообщений и кнопки "Начать игру" / "Начать заново"
-    centerMessageContainer.style.display = 'flex'; // Используем flexbox для центрирования содержимого (кнопки и текста)
-    centerMessageContainer.style.flexDirection = 'column'; // Располагаем элементы друг под другом
-    centerMessageContainer.style.alignItems = 'center'; // Центрируем по горизонтали
+    
+    centerMessageContainer.style.display = 'flex'; 
+    centerMessageContainer.style.flexDirection = 'column'; 
+    centerMessageContainer.style.alignItems = 'center'; 
 
-    startMessageElement.style.display = 'block'; // Показываем стартовое сообщение
-    startMessageElement.textContent = "Press SPACE or click to jump"; // Текст на стартовом экране
-    gameOverMessageElement.style.display = 'none'; // Скрываем сообщение Game Over (оно не нужно на старте)
+    startMessageElement.style.display = 'block'; 
+    startMessageElement.textContent = "Press SPACE or click to jump"; 
+    gameOverMessageElement.style.display = 'none'; 
 
-    restartBtn.style.display = 'inline-block'; // Показываем кнопку "Начать игру"
-    restartBtn.textContent = "Start the game"; // Текст на кнопке старта
+    restartBtn.style.display = 'inline-block'; 
+    restartBtn.textContent = "Start the game"; 
 
 
     // Создаем несколько начальных облаков
     if (BACKGROUND_CONFIG.clouds.enabled) {
-         clouds = []; // Очищаем на всякий случай
+         clouds = []; 
          for (let i = 0; i < 5; i++) {
              createCloud();
-             // Располагаем их по всему экрану в случайных позициях
+             
              if (canvas) clouds[i].x = Math.random() * canvas.width;
          }
      }
 
-    // ! Запускаем первый кадр отрисовки.
-    // gameLoop нарисует стартовый экран. Дальше requestAnimationFrame продолжит вызывать gameLoop.
-    // Игра начнется только когда gameRunning станет true (при вызове restartGame по первому действию пользователя).
+    
     console.log("Initialization: Canvas and UI are set up. Starting the first rendering frame (start screen).");
     requestAnimationFrame(gameLoop);
 }
@@ -263,8 +254,8 @@ function drawBackground() {
 function drawGround() {
     if (!ctx || !canvas) return;
     ctx.fillStyle = GROUND_CONFIG.color;
-    // Рисуем прямоугольник земли от GROUND_CONFIG.y ДО НИЖНЕГО КРАЯ CANVAS
-    ctx.fillRect(0, GROUND_CONFIG.y, canvas.width, canvas.height - GROUND_CONFIG.y); // <-- ИСПРАВЛЕНО ЗДЕСЬ
+   
+    ctx.fillRect(0, GROUND_CONFIG.y, canvas.width, canvas.height - GROUND_CONFIG.y); 
 
     // Добавляем визуальную линию на верхней границе земли
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
@@ -461,7 +452,7 @@ function increaseGameSpeed() {
     if (gameSpeed > SPEED_INCREASE_CONFIG.maxSpeed) {
         gameSpeed = SPEED_INCREASE_CONFIG.maxSpeed;
     }
-     // console.log("Текущая скорость:", gameSpeed); // Можно раскомментировать для отладки скорости
+     // console.log("Текущая скорость:", gameSpeed); 
 }
 
 
@@ -472,9 +463,7 @@ function increaseGameSpeed() {
 function gameLoop() {
     if (!ctx || !canvas) {
          console.error("Critical error: Canvas or 2D context is not available.");
-         // Чтобы остановить requestAnimationFrame, если контекст потерян:
-         // Нужно сохранить идентификатор, возвращаемый requestAnimationFrame, и вызвать cancelAnimationFrame.
-         // Для простоты, мы просто выводим ошибку и возвращаемся.
+         
          return;
     }
 
@@ -482,43 +471,41 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // --- Отрисовка фона и земли ---
-    drawBackground(); // Небо с градиентом
-    drawGround();     // Земля (до низа Canvas)
-    drawClouds();     // Облака
+    drawBackground(); 
+    drawGround();     
+    drawClouds();     
 
 
     if (!gameRunning) {
-        // Если игра НЕ запущена (стартовый экран или Game Over)
-        // Отрисовываем только статический кадр: фон, земля, облака, игрок.
-        // Логика игры (обновление позиций, скорости) НЕ ВЫПОЛНЯЕТСЯ.
-        drawPlayer(); // Отрисовываем игрока на его стартовой позиции
+        
+        drawPlayer(); 
 
         // UI (сообщения, кнопки) управляется через style.display.
 
-        requestAnimationFrame(gameLoop); // Запрашиваем следующий кадр для поддержания отрисовки статического экрана
-        return; // Выходим из функции gameLoop для этого кадра.
+        requestAnimationFrame(gameLoop); 
+        return; 
     }
 
     // --- Обновление состояния игры (выполняется только когда gameRunning == true) ---
-    updateClouds(); // Облака двигаются
-    updatePlayer(); // Игрок прыгает/падает
-    updateObstacles(); // Препятствия движутся, генерируются, удаляются, счет обновляется
-    increaseGameSpeed(); // Скорость увеличивается
+    updateClouds(); 
+    updatePlayer(); 
+    updateObstacles(); 
+    increaseGameSpeed(); 
 
     // --- Отрисовка игровых объектов ---
-    drawPlayer(); // Отрисовываем игрока в его новой позиции
-    obstacles.forEach(drawObstacle); // Отрисовываем все активные препятствия
+    drawPlayer(); 
+    obstacles.forEach(drawObstacle); 
 
     // --- Проверка условий окончания игры ---
     if (checkCollision()) {
-        gameOver(); // Если обнаружено столкновение, вызываем функцию окончания игры
+        gameOver(); 
         // gameRunning становится false внутри gameOver().
         // В следующем кадре gameLoop() увидит, что gameRunning false, и перейдет в режим отрисовки game over.
-        return; // Прерываем выполнение оставшейся части gameLoop для этого кадра.
+        return; 
     }
 
     // --- Запрос следующего кадра ---
-    // Если игра еще НЕ окончена (мы не вышли из функции выше), запрашиваем следующий кадр.
+    
     requestAnimationFrame(gameLoop);
 }
 
@@ -526,74 +513,69 @@ function gameLoop() {
 // СОСТОЯНИЯ ИГРЫ (СТАРТ, РЕСТАРТ, GAME OVER)
 // ========================================
 
-// Функция для запуска или перезапуска игры.
-// Сбрасывает все игровые переменные и переводит игру в состояние "запущено".
-// Привязана к кнопке перезапуска и первому действию пользователя.
+
 window.restartGame = function() {
     console.log("Starting/Restarting the game...");
 
     // --- Сбрасываем игровые переменные ---
-    gameRunning = true; // !!! Устанавливаем флаг, что игра ЗАПУЩЕНА
+    gameRunning = true; 
     score = 0; // Сбрасываем счет
-    if (scoreElement) scoreElement.textContent = `Score ${score}`; // Обновляем текст счета
-    gameSpeed = OBSTACLE_CONFIG.speed; // Сбрасываем скорость к НАЧАЛЬНОЙ скорости из конфига
-    obstacles = []; // Очищаем массив препятствий
-    clouds = []; // Очищаем массив облаков (они будут созданы заново ниже)
-    lastScoreSound = 0; // Сбрасываем счетчик последнего проигранного звука очков
+    if (scoreElement) scoreElement.textContent = `Score ${score}`; 
+    gameSpeed = OBSTACLE_CONFIG.speed; 
+    obstacles = []; 
+    clouds = []; 
+    lastScoreSound = 0; 
 
     // --- Сбрасываем позицию и состояние игрока ---
-    if (canvas) { // Проверяем, что canvas существует перед расчетом позиции
-         // Пересчитываем Y на случай, если размер Canvas изменился
+    if (canvas) { 
+         
          player.y = GROUND_CONFIG.y - PLAYER_CONFIG.height - PLAYER_CONFIG.groundYOffset;
     }
-    player.velocityY = 0; // Изначальная скорость игрока по вертикали
-    player.grounded = true; // Игрок начинает на земле
-    player.jumping = false; // Игрок не прыгает в начале
+    player.velocityY = 0; 
+    player.grounded = true; 
+    player.jumping = false; 
 
     // --- Скрываем UI сообщений во время игры ---
-    // Контейнер centerMessageContainer скрывается, убирая сообщения и кнопку "Начать игру" / "Начать заново" с экрана игры.
+    
     if (centerMessageContainer) centerMessageContainer.style.display = 'none';
-    // Отдельные сообщения и кнопка тоже скрываются, хотя их уже скрывает контейнер.
+    
     if (startMessageElement) startMessageElement.style.display = 'none';
     if (gameOverMessageElement) gameOverMessageElement.style.display = 'none';
-    // Кнопка перезапуска также скрывается, хотя её уже скрывает контейнер.
+    
     if (restartBtn) restartBtn.style.display = 'none';
 
 
     // Создаем несколько начальных облаков для фона
-    if (BACKGROUND_CONFIG.clouds.enabled && canvas) { // Проверяем, что облака включены и canvas доступен
+    if (BACKGROUND_CONFIG.clouds.enabled && canvas) { 
          for (let i = 0; i < 5; i++) {
              createCloud();
-             // Располагаем их по всему экрану в случайных позициях
+             
              clouds[i].x = Math.random() * canvas.width;
          }
      }
 
-    // gameLoop уже запущен через requestAnimationFrame в конце window.onload.
-    // Установка gameRunning = true в начале этой функции позволяет ему начать обновление логики игры в следующем кадре.
+    
     console.log("Game restarted. Speed ​​reset to:", gameSpeed);
 
-    // ! Не вызываем gameLoop() напрямую здесь, т.к. requestAnimationFrame уже управляет вызовами.
-    // gameLoop просто продолжит выполнение с gameRunning = true в следующем кадре.
+   
 }
 
-// Функция окончания игры.
-// Вызывается при обнаружении столкновения.
+
 function gameOver() {
-    gameRunning = false; // !!! Устанавливаем флаг, что игра ОСТАНОВЛЕНА
+    gameRunning = false;
     console.log("Game over. Final score:", score);
 
     // --- Показываем UI Game Over ---
-    // Показываем контейнер сообщений/кнопки.
+    
     if (centerMessageContainer) centerMessageContainer.style.display = 'flex';
-    // Показываем сообщение "Игра окончена!", скрываем стартовое сообщение.
+    
     if (gameOverMessageElement) {
         gameOverMessageElement.style.display = 'block';
-        gameOverMessageElement.textContent = "Game Over!"; // Убедимся, что текст правильный
+        gameOverMessageElement.textContent = "Game Over!"; 
     }
-     if (startMessageElement) startMessageElement.style.display = 'none'; // Скрываем стартовое сообщение
+     if (startMessageElement) startMessageElement.style.display = 'none'; 
 
-    // Показываем кнопку "Начать заново", убеждаемся в ее тексте.
+    
     if (restartBtn) {
         restartBtn.style.display = 'inline-block';
         restartBtn.textContent = "Restart the game";
@@ -601,7 +583,7 @@ function gameOver() {
 
     playSound(gameOverSound); // Проигрываем звук окончания игры
 
-    // gameLoop продолжит вызываться через requestAnimationFrame, отрисовывая статический game over экран.
+    
 }
 
 
@@ -612,42 +594,40 @@ function gameOver() {
 // Обработка нажатия клавиши ПРОБЕЛ
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
-        e.preventDefault(); // Предотвращаем стандартное действие браузера
-        handlePlayerAction(); // Вызываем универсальную функцию обработки действия игрока
+        e.preventDefault(); 
+        handlePlayerAction(); 
     }
 });
 
 // Обработка клика мышью на canvas
-if (canvas) { // Проверяем, что canvas существует перед добавлением слушателя
+if (canvas) { 
     canvas.addEventListener('click', () => {
          handlePlayerAction();
     });
 }
 
 // Обработка тача на canvas
-if (canvas) { // Проверяем, что canvas существует перед добавлением слушателя
+if (canvas) { 
     canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault(); // Предотвращаем стандартное действие тача (например, масштабирование)
+        e.preventDefault(); 
          handlePlayerAction();
     });
 }
 
 // Универсальная функция обработки действий пользователя (прыжок, клик, тач)
 function handlePlayerAction() {
-     // Если игра не запущена (мы на стартовом экране или после Game Over),
-     // первое действие пользователя (пробел, клик, тач) запускает игру.
-     // Иначе, если игра запущена, действие вызывает прыжок.
+    
      if (!gameRunning) {
-         restartGame(); // Вызываем функцию запуска/перезапуска игры
+         restartGame(); 
      } else {
-          jump(); // Вызываем функцию прыжка
+          jump(); 
      }
 }
 
 // Обработка клика по кнопке перезапуска/старта
-if (restartBtn) { // Проверяем, что кнопка существует перед добавлением слушателя
+if (restartBtn) { 
      restartBtn.addEventListener('click', () => {
-         restartGame(); // Клик по кнопке всегда запускает игру заново
+         restartGame(); 
      });
 }
 
@@ -656,33 +636,26 @@ if (restartBtn) { // Проверяем, что кнопка существуе�
 // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
 // ========================================
 
-// Этот код выполнится один раз после полной загрузки всего HTML контента и всех скриптов.
-// Здесь мы настраиваем начальное состояние Canvas и UI, и запускаем первый кадр отрисовки (стартовый экран).
+
 window.onload = () => {
     console.log("window.onload: The window and all main resources (HTML, JS) are loaded.");
 
-    // Проверяем, что все ресурсы (изображения) загружены перед инициализацией Canvas.
-    // checkAllImagesLoaded() вызывается при загрузке каждого изображения.
-    // Если все флаги true, initializeGameCanvas() вызывается.
-    // Если window.onload сработал раньше загрузки всех изображений, мы ждем их здесь.
+    
     if (playerImageLoaded && obstacleImageLoaded) {
-        initializeGameCanvas(); // Вызываем функцию инициализации Canvas и UI.
+        initializeGameCanvas(); 
         console.log("window.onload: Canvas and UI initialization started.");
     } else {
          console.log("window.onload: Wait for images to load before initializing Canvas.");
-         // Если изображения еще не загружены, checkAllImagesLoaded вызовет initializeGameCanvas
-         // после их загрузки.
+         
     }
 
-    // ! ВАЖНО: gameLoop запущен внутри initializeGameCanvas с помощью requestAnimationFrame.
-    // requestAnimationFrame(gameLoop) не вызывается здесь напрямую в window.onload.
 };
 
 
 function checkAllImagesLoaded() {
     if (playerImageLoaded && obstacleImageLoaded) {
         console.log("Resources: All images loaded or missing. Canvas initialization ready.");
-        // Если DOM уже загружен, инициализируем сразу
+        
         if (document.readyState === 'complete') {
             initializeGameCanvas();
         }
