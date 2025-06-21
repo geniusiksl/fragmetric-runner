@@ -85,10 +85,54 @@ const BACKGROUND_CONFIG = {
 
 // Настройки ускорения игры
 const SPEED_INCREASE_CONFIG = {
-    rate: 0.0008, maxSpeed: 3 
+    rate: 0.0008, 
+    maxSpeed: 10,
+    increaseInterval: 10  
 };
+let nextSpeedIncrease = SPEED_INCREASE_CONFIG.increaseInterval;
 
-// Настройки а
+function updateObstacles(deltaTime) {
+    if (!canvas) return;
+    const modifier = deltaTime / 16.66;
+
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+        obstacles[i].x -= gameSpeed * modifier;
+
+        if (obstacles[i].x + obstacles[i].width < 0) {
+            obstacles.splice(i, 1);
+            score++;
+            if (scoreElement) scoreElement.textContent = `Score: ${score}`;
+
+            // Увеличиваем скорость каждые SPEED_INCREASE_CONFIG.increaseInterval очков
+            if (score >= nextSpeedIncrease) {
+                increaseGameSpeed();
+                nextSpeedIncrease += SPEED_INCREASE_CONFIG.increaseInterval;
+            }
+
+            if (score > 0 && score % 10 === 0) {
+                if (score > lastScoreSound) {
+                    playSound(scoreSound);
+                    lastScoreSound = score;
+                }
+            }
+        }
+    }
+
+    if (obstacles.length === 0 ||
+        obstacles[obstacles.length - 1].x < canvas.width - OBSTACLE_CONFIG.minGap -
+        Math.random() * (OBSTACLE_CONFIG.maxGap - OBSTACLE_CONFIG.minGap)) {
+        createObstacle();
+    }
+}
+function increaseGameSpeed() {
+  gameSpeed += SPEED_INCREASE_CONFIG.rate;
+
+  if (gameSpeed > SPEED_INCREASE_CONFIG.maxSpeed) {
+    gameSpeed = SPEED_INCREASE_CONFIG.maxSpeed;
+  }
+}
+
+
 let soundEnabled = true; // Звук включен по умолчанию
 
 // ========================================
