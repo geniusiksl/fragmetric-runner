@@ -131,6 +131,8 @@ body {
     text-decoration: underline;
     color: white; 
     font-weight: bold;
+    position: relative; /* Делаем элемент позиционированным */
+    bottom: -2px; 
 }
 
 #gameFooter a {
