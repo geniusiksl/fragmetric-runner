@@ -85,7 +85,7 @@ const BACKGROUND_CONFIG = {
 
 // Настройки ускорения игры
 const SPEED_INCREASE_CONFIG = {
-    rate: 0.0008, 
+    rate: 0.0005, 
     maxSpeed: 7,
     increaseInterval: 10  
 };
