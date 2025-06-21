@@ -53,7 +53,7 @@ if (!scoreElement || !centerMessageContainer || !startMessageElement || !gameOve
 const PLAYER_CONFIG = {
     width: 60, height: 60, x: 100,
     groundYOffset: 5, 
-    jumpPower: 23,     
+    jumpPower: 17.5,     
     gravity: 0.6,      
     imageSrc: 'topu.png', 
     color: '#4CAF50'   
