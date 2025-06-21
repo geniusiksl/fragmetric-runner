@@ -86,7 +86,7 @@ const BACKGROUND_CONFIG = {
 // Настройки ускорения игры
 const SPEED_INCREASE_CONFIG = {
     rate: 0.0008, 
-    maxSpeed: 10,
+    maxSpeed: 7,
     increaseInterval: 10  
 };
 let nextSpeedIncrease = SPEED_INCREASE_CONFIG.increaseInterval;
